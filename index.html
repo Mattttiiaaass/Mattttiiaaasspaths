@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>FN Asset Path Finder — Search Fortnite Asset Paths</title>
+    <meta name="description" content="Search Fortnite game asset paths by keyword, format them for UEFN, and copy or inspect the JSON export instantly." />
+    <meta name="theme-color" content="#12131a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="FN Paths" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAIGNIUk0AAHomAACAhAAA+gAAAIDoAAB1MAAA6mAAADqYAAAXcJy6UTwAAAC0ZVhJZklJKgAIAAAABgASAQMAAQAAAAEAAAAaAQUAAQAAAFYAAAAbAQUAAQAAAF4AAAAoAQMAAQAAAAIAAAATAgMAAQAAAAEAAABphwQAAQAAAGYAAAAAAAAAYAAAAAEAAABgAAAAAQAAAAYAAJAHAAQAAAAwMjEwAZEHAAQAAAABAgMAAKAHAAQAAAAwMTAwAaADAAEAAAD//wAAAqAEAAEAAADQBwAAA6AEAAEAAADQBwAAAAAAANfAKpMAAAAGYktHRAAAAAAAAPlDu38AAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAHdElNRQfqCA0JAByiwWaYAAAD2XpUWHRSYXcgcHJvZmlsZSB0eXBlIHhtcAAASImdV0m2ozAM3OsUfQRbsi04DmHY9Xu97ON3lQnB/DjJ7x8eELCG0mghf3//kV/4xeKj2GybDx5KLFZuJXvSULTk4mUsqy3q63a73TZ1vB9L4pvsltNiIS0ekoF2KKOkwScHYzaf0ppTwR0CzcCkbputYbLZB5t8KGAsC5WVqIHPZS6rG9eEGoAmlY04bNoXHuRAcheloCk2ZU0plS9isCZYpKjBE45gE1g3rz9dHVS6lg2ErptFG3ngXzDFVXFddgW6iJvDF9Tugy7UgPWKIkwaTiSAAdfAcC2jB9CPsGEFsvu6wCyFThhCZOpkvwJPsaKFgKLP6KvqtUQ5iSjsrmdFBLeygAzeAyHM0tXC4TGqsvmiYJJUSY/l1piMwHo8V9o1oB1Ps5g8AmvAkJPDckSNWaLVGzRXgSyfKA5xVyyJfsvwEQzKSLQVXkY0DBHA3XGNeJp167GdXIcK6epIlRBm+Q2Rj56BL9mtZpu1b+Dw+5PwESkW05BDuoG5pIlnGlsGndsn1gjM1/adnDL5CGdF5O0CH47AZeZIg+21SMRaEdkVmd0HWnHqIdRDjjAaqZHiK6ECoHQby3HeXfhaNHzEIBREl2iTZRtQMgzLgKhZxl/mgxqLRGsT4bsMv6JL4OAPBWXIF9C03lqOuEovVm+zJqN7pTTWhEECwEPsHSZGKAsU0kD+Q6IAKrNpsAFgIrHhztPRpSLQk4amNVkmz3re4oGBBxq4gmfBdbQokBupqToudDL5wfpOQUZjQ03Bn8Oj2tZeYaAFP9G1xazI7Kae2x6gW78LdDDX/iE7QcvY74WfeqY8N81v9Ey2vdqeuWW5ARO2I0fYV5bg0RoeZJnXtrlSSG2vxvrygl3m0Uul5Lo9wjBPl0ba0fpOqVStXbAfsa55pJeq+01+IOCHPvpmVOX/t8J+VKUNK6u4s4GHup/M5+ZNOlwz+DKnBCKXx/YXr9tfFToRD865LYkGeyzzYby82PoqzvrEjuzEWWcDeg75g7qb93QBHftRFong/=" />
+
+    <style>
+        :root {
+            --bg-color: #12131a;
+            --card-bg: #1a1c26;
+            --accent-color: #0070f3;
+            --text-color: #ffffff;
+            --text-muted: #8a8d98;
+            --border-color: #2d3142;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 800px;
+            margin-top: 40px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        p.description {
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 1rem;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: white;
+            box-sizing: border-box;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus {
+            border-color: var(--accent-color);
+        }
+
+        .results-container {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .asset-card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: relative;
+        }
+
+        .asset-name {
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .asset-path {
+            font-family: monospace;
+            background-color: rgba(0,0,0,0.2);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            word-break: break-all;
+            color: #22c55e;
+        }
+
+        .uefn-path {
+            font-family: monospace;
+            background-color: rgba(0,0,0,0.3);
+            padding: 6px 10px;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            word-break: break-all;
+            color: #3b82f6;
+        }
+
+        .badge {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .actions {
+            display: flex;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        button {
+            background-color: #2d3142;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            transition: background-color 0.2s;
+        }
+
+        button:hover {
+            background-color: #3e445e;
+        }
+
+        .status {
+            text-align: center;
+            color: var(--text-muted);
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>FN Asset Path Finder</h1>
+        <p class="description">Search Fortnite game asset paths, format them for UEFN, and copy instantly.</p>
+        
+        <input type="text" id="search" class="search-box" placeholder="Type keyword to search assets (e.g., Peely, Shotgun)..." disabled />
+        
+        <div id="status" class="status">Loading Fortnite asset data...</div>
+        <div id="results" class="results-container"></div>
+    </div>
+
+    <script>
+        let assetData = [];
+
+        // De twee gecomprimeerde databestanden in de root-map
+        const DATA_FILES = [
+            './fortnite_assets_all.gz',
+            './fortnite_assets_new.gz'
+        ]; 
+
+        const searchInput = document.getElementById('search');
+        const statusDiv = document.getElementById('status');
+        const resultsDiv = document.getElementById('results');
+
+        // Helperfunctie om een .gz bestand te downloaden en te decompileren naar JSON
+        async function fetchAndDecompressGz(url) {
+            const response = await fetch(url);
+            if (!response.ok) throw new Error(`Failed to load ${url}`);
+            
+            // Gebruik de native browser DecompressionStream voor gzip
+            const ds = new DecompressionStream('gzip');
+            const decompressedStream = response.body.pipeThrough(ds);
+            
+            // Lees de stream uit als tekst en converteer naar JSON
+            const text = await new Response(decompressedStream).text();
+            return JSON.parse(text);
+        }
+
+        // Laad beide .gz bestanden in en voeg ze samen
+        async function loadAssets() {
+            try {
+                statusDiv.innerText = "Decompressing and loading asset files...";
+                
+                // Laad beide bestanden tegelijkertijd in
+                const [allAssets, newAssets] = await Promise.all([
+                    fetchAndDecompressGz(DATA_FILES[0]),
+                    fetchAndDecompressGz(DATA_FILES[1])
+                ]);
+
+                // Voeg beide arrays samen tot één grote lijst
+                assetData = [...allAssets, ...newAssets];
+                
+                statusDiv.innerText = `Successfully loaded ${assetData.length} assets from compressed packages.`;
+                searchInput.disabled = false;
+                searchInput.focus();
+            } catch (error) {
+                statusDiv.innerHTML = `<span style="color: #ef4444;">Error: Could not load or decompress .gz files. Ensure both '${DATA_FILES[0]}' and '${DATA_FILES[1]}' exist in the root directory.</span>`;
+                console.error(error);
+            }
+        }
+
+        // Formatteer pad naar UEFN stijl
+        function formatToUEFN(rawPath) {
+            if (!rawPath) return '';
+            let clean = rawPath.split('.')[0];
+            let parts = clean.split('/');
+            let objectName = parts[parts.length - 1];
+            return `${clean}.${objectName}`;
+        }
+
+        // Zoekfunctie
+        function handleSearch(e) {
+            const query = e.target.value.toLowerCase().trim();
+            resultsDiv.innerHTML = '';
+
+            if (query.length < 2) {
+                statusDiv.innerText = query.length === 0 ? `Total assets: ${assetData.length}` : 'Type at least 2 characters...';
+                return;
+            }
+
+            const filtered = assetData.filter(item => {
+                const nameMatch = item.name && item.name.toLowerCase().includes(query);
+                const pathMatch = item.path && item.path.toLowerCase().includes(query);
+                return nameMatch || pathMatch;
+            }).slice(0, 50); 
+
+            statusDiv.innerText = `Found ${filtered.length} matches (showing max 50).`;
+
+            if (filtered.length === 0) {
+                resultsDiv.innerHTML = '<div class="status">No assets found matching that keyword.</div>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const uefnPath = formatToUEFN(item.path);
+                
+                const card = document.createElement('div');
+                card.className = 'asset-card';
+                
+                card.innerHTML = `
+                    <div class="asset-name">${item.name || 'Unnamed Asset'}</div>
+                    <div>
